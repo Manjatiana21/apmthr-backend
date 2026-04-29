@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Notifications Admin</h2>
+
+  <!-- ✅ compteur des notifications non lues -->
+  <div class="mb-3">
+    <span id="notif-counter" class="badge bg-danger">
+      Notifications non lues : {{ nb_non_lues }}
+    </span>
+  </div>
+
+  <ul class="list-group" id="notif-list">
+    {% if notifications %}
+      {% for notif in notifications %}
+        <li id="notif-{{ notif.id }}" 
+            class="list-group-item d-flex justify-content-between align-items-center 
+                   {% if not notif.lu %}list-group-item-warning{% endif %}">
+          <span>{{ notif.message }}</span>
+          {% if not notif.lu %}
+            <!-- ✅ bouton AJAX -->
+            <button class="btn btn-sm btn-outline-primary mark-read-btn" 
+                    data-id="{{ notif.id }}">
+              Marquer comme lue
+            </button>
+          {% endif %}
+        </li>
+      {% endfor %}
+    {% else %}
+      <li class="list-group-item">Aucune notification</li>
+    {% endif %}
+  </ul>
+</div>
+
+<!-- ✅ Script AJAX -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const buttons = document.querySelectorAll(".mark-read-btn");
+  buttons.forEach(btn => {
+    btn.addEventListener("click", function() {
+      const notifId = this.dataset.id;
+      
+      
+
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // ✅ mettre à jour l'élément visuellement
+          const li = document.getElementById(`notif-${notifId}`);
+          li.classList.remove("list-group-item-warning");
+          this.remove(); // supprimer le bouton
+          // ✅ mettre à jour le compteur
+          document.getElementById("notif-counter").innerText = 
+            "Notifications non lues : " + data.nb_non_lues;
+        }
+      });
+    });
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Détail produit{% endblock %}
+{% block content %}
+<h2>{{ produit.designation }}</h2>
+<img src="{{ produit.image.url }}" alt="{{ produit.designation }}">
+<p>{{ produit.description }}</p>
+<p>Prix : {{ produit.prix }} Ar</p>
+<a href="{% url 'passer_commande' produit.id %}" class="btn">Passer commande</a>
+{% endblock %}

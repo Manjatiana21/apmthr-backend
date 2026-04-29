@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Gestion des stocks{% endblock %}
+{% block content %}
+<h2>Historique du stock pour produit {{ produit.nom }}</h2>
+<table>
+    <tr>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Quantité</th>
+    </tr>
+    {% for mvt in mouvements %}
+    <tr>
+        <td>{{ mvt.type_mouvement }}</td>
+        <td>{{ mvt.date_mouvement }}</td>
+        <td>{{ mvt.quantite }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">Aucun mouvement enregistré</td></tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Détail livraison{% endblock %}
+{% block content %}
+<h2>Tableau de bord Admin</h2>
+<ul>
+    <li><a href="{% url 'gestion_stock' %}">Gestion du stock</a></li>
+    <li><a href="{% url 'gestion_paiement' %}">Gestion des paiements</a></li>
+    <li><a href="{% url 'rapport_mouvement' %}">Rapport des mouvements</a></li>
+    <li><a href="{% url 'gestion_commandes' %}">Gestion des commandes</a></li>
+    <li><a href="{% url 'liste_livraisons_admin' %}">Gestions des Livraisons</a></li>
+    <li><a href="{% url 'ajouter_produit' %}">Ajouter d'un nouveau Produit</a></li>
+    <li><a href="{% url 'listes_des_produits' %}">Liste des Produits Ajoutés</a></li>
+</ul>
+
+{% endblock %}

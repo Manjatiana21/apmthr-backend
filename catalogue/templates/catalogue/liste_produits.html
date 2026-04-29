@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Catalogue{% endblock %}
+{% block content %}
+<h2>Nos Produits</h2>
+<div class="grid-produits">
+    {% for produit in produits %}
+    <div class="carte-produit">
+        {% if produit.image %}
+        <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+    {% else %}
+        <img src="{% static 'images/default.png' %}" alt="Image par défaut">
+    {% endif %}
+        <h3>{{ produit.designation }}</h3>
+        <p>{{ produit.prix }} Ar</p>
+        <a href="{% url 'passer_commande' produit.id %}" class="btn">Passer commande</a>
+    </div>
+    {% endfor %}
+    <p>Index : {{ forloop.counter }} - ID : {{ produit.id }}</p>
+</div>
+{% endblock %}
+

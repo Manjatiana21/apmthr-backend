@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Gestion des commandes{% endblock %}
+{% block content %}
+<h2>Gestion des commandes</h2>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Client</th>
+    <th>Date</th>
+    <th>Total</th>
+    <th>Statut</th>
+    <th>Actions</th>
+  </tr>
+  {% for commande in commandes %}
+  <tr>
+    <td>{{ commande.id }}</td>
+    <td>{{ commande.client.username }}</td>
+    <td>{{ commande.date_commande }}</td>
+    <td>{{ commande.total }} Ar</td>
+    <td>{{ commande.statut }}</td>
+    <td>
+      <a href="{% url 'detail_commande_admin' commande.id %}">Voir détails</a> |
+      <a href="{% url 'valider_commande' commande.id %}">Valider</a> |
+      <a href="{% url 'annuler_commande' commande.id %}">Annuler</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

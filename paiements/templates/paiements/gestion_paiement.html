@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Gestion des paiements</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr id="paiement-{{ paiement.id }}">
+                <th>Client</th>
+                <th>Produits commandés</th>
+                <th>Montant</th>
+                <th>Mode</th>
+                <th>Statut</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paiement in paiements %}
+            <tr>
+                <td>{{ paiement.client.username }}</td>
+                <td>
+                    {% for detail in paiement.commande.details.all %}
+                            {{ detail.produit.designation }} (x{{ detail.quantite }})<br>
+                    {% endfor %}
+                </td>
+                <td>{{ paiement.montant }}</td>
+                <td>{{ paiement.mode_paiement }}</td>
+                <td>{{ paiement.statut }}</td>
+                <td>{{ paiement.date_paiement }}</td>
+               <td>
+                    {% if paiement.statut == "EN ATTENTE" %}
+                        <button class="btn btn-success btn-sm action-paiement" data-id="{{ paiement.id }}" data-action="valider">Valider</button>
+                        <button class="btn btn-danger btn-sm action-paiement" data-id="{{ paiement.id }}" data-action="annuler">Annuler</button>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">Aucun paiement en attente.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $(".action-paiement").click(function(){
+        let paiementId = $(this).data("id");
+        let action = $(this).data("action");
+        let url = `/paiements/paiement/${paiementId}/${action}/`;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function(response){
+                if(response.success){
+                    // Mettre à jour le statut dans la table
+                    $(`#paiement-${paiementId} .statut`).text(response.statut);
+                    // Désactiver les boutons
+                    $(`#paiement-${paiementId} .action-paiement`).remove();
+                }
+            },
+            error: function(){
+                alert("Erreur lors de la mise à jour du paiement.");
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

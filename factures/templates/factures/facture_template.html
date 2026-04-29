@@ -1,0 +1,68 @@
+{%load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Facture {{ facture.numero }}</title>
+  <link rel="stylesheet" href="{% static 'css/Facture.css' %}">
+
+</head>
+<body>
+  <div class="facture-detail">
+    <img src="{{ logo_path }}" alt="Logo" class="logo" />
+    <h2 class="title">Facture N° {{ facture.numero }}</h2>
+
+    <div class="facture_header">
+      <div class="association-info">
+        <h2 class="APMTHR">APMTHR</h2>
+        <p><strong>Numéro :</strong> 034 09 071 90</p>
+        <p>aapmthr@gmail.com</p>
+        <p>AK 97 Ankadikely Ilafy, Antananarivo 103</p>
+      </div>
+
+      <div class="client-info">
+        <h3>Client</h3>
+        <p><strong>Nom :</strong> {{ facture.commande.client.username }}</p>
+        <p><strong>Email :</strong> {{ facture.commande.client.email }}</p>
+        <p><strong>Adresse :</strong> {{ facture.commande.client.adresse }}</p>
+        <p><strong>Téléphone :</strong> {{ facture.client.telephone|default:"Non renseigné" }}</p>
+        <p><strong>Paiement :</strong> {{ facture.paiement.mode_paiement }}</p>
+        <p><strong>Date de paiement :</strong> {{ facture.paiement.date_paiement}}</p>
+      </div>
+      
+    </div>
+
+    <table class="table-facture">
+      <thead>
+        <tr>
+          <th>Désignation</th>
+          <th>Quantité</th>
+          <th>Prix unitaire</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for detail in facture.commande.details.all %}
+        <tr>
+          <td>{{ detail.produit }}</td>
+          <td>{{ detail.quantite }}</td>
+          <td>{{ detail.prix_unitaire }} Ar</td>
+          <td>{{ facture.montant_total }} Ar</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="total-right">
+      <h3>Total à payer : {{ facture.montant_total }} Ar</h3>
+    </div>
+
+    <p>
+      <strong>Envoyée :</strong>
+      <span class="badge {% if facture.envoyee %}badge-success{% else %}badge-danger{% endif %}">
+        {% if facture.envoyee %}Oui{% else %}Non{% endif %}
+      </span>
+    </p>
+  </div>
+</body>
+</html>

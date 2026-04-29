@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Gestion des stocks{% endblock %}
+{% block content %}
+<h2>Historique des mouvements de stock</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Produit</th>
+            <th>Type</th>
+            <th>Quantité</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mouvement in mouvements %}
+        <tr>
+            <td>{{ mouvement.id }}</td>
+            <td>{{ mouvement.produit.designation }}</td>
+            <td>{{ mouvement.type_mouvement }}</td>
+            <td>{{ mouvement.quantite }}</td>
+            <td>{{ mouvement.date_mouvement }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

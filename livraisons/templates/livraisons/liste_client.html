@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Gestion des livraisons</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Commande</th>
+        <th>Client</th>
+        <th>Statut commande</th>
+        <th>Statut livraison</th>
+        <th>Date prévue</th>
+        <th>Dernière mise à jour</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for livraison in livraisons %}
+      <tr>
+        <td>#{{ livraison.commande.id }}</td>
+        <td>{{ livraison.commande.client.username }}</td>
+        <td>{{ livraison.commande.statut }}</td>
+        <td>
+          {% if livraison.statut == "NON DÉMARRÉE" %}
+            <span class="badge bg-secondary">Non démarrée</span>
+          {% elif livraison.statut == "EN COURS" %}
+            <span class="badge bg-warning text-dark">En cours</span>
+          {% elif livraison.statut == "LIVRÉE" %}
+            <span class="badge bg-success">Livrée</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if livraison.date_prevue %}
+            {{ livraison.date_prevue|date:"d/m/Y H:i" }}
+          {% else %}
+            Non planifiée
+          {% endif %}
+        </td>
+        <td>{{ livraison.date_mise_a_jour|date:"d/m/Y H:i" }}</td>
+        <td>
+          {% if livraison.statut == "NON DÉMARRÉE" %}
+            <a href="{% url 'planifier_livraison' livraison.commande.id %}" class="btn btn-sm btn-primary">
+              Planifier (48h)
+            </a>
+          {% elif livraison.statut == "EN COURS" %}
+            <a href="{% url 'terminer_livraison' livraison.id %}" class="btn btn-sm btn-success">
+              Marquer livrée
+            </a>
+          {% elif livraison.statut == "LIVRÉE" %}
+            <span class="badge bg-success">Livrée</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="text-center">Aucune livraison en cours</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

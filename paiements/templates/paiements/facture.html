@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    h1, h2, h3 { color: #2e7d32; }
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px solid #2e7d32; padding-bottom: 1rem; margin-bottom: 2rem;
+    }
+    .logo { font-size: 1.5rem; font-weight: bold; color: #2e7d32; }
+    .slogan { font-style: italic; color: #555; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ddd; padding: 0.6rem; text-align: center; }
+    th { background-color: #2e7d32; color: white; }
+    .total { text-align: right; font-size: 1.2rem; margin-top: 1rem; }
+    .badge { padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: bold; }
+    .badge-warning { background-color: #ff9800; color: black; }
+    .badge-success { background-color: #2e7d32; color: white; }
+    .badge-danger { background-color: #d32f2f; color: white; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🛍️ APMTHR</div>
+    <div class="slogan">Votre satisfaction, notre priorité</div>
+  </div>
+
+  <h2>Facture de paiement</h2>
+  <p><strong>Client :</strong> {{ paiement.client.username }}</p>
+  <p><strong>Commande :</strong> #{{ commande.id }}</p>
+  <p><strong>Date :</strong> {{ paiement.date_paiement }}</p>
+  <p><strong>Mode de paiement :</strong> {{ paiement.mode_paiement }}</p>
+  <p><strong>Statut :</strong>
+    {% if paiement.statut == "EN ATTENTE" %}
+      <span class="badge badge-warning">En attente</span>
+    {% elif paiement.statut == "REÇU" %}
+      <span class="badge badge-success">Reçu</span>
+    {% elif paiement.statut == "ANNULÉ" %}
+      <span class="badge badge-danger">Annulé</span>
+    {% endif %}
+  </p>
+
+  <h3>Produits commandés :</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Quantité</th>
+        <th>Prix unitaire</th>
+        <th>Sous-total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for detail in details %}
+      <tr>
+        <td>{{ detail.produit.designation }}</td>
+        <td>{{ detail.quantite }}</td>
+        <td>{{ detail.prix_unitaire }} Ar</td>
+        <td>{{ detail.sous_total }} Ar</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p class="total"><strong>Total :</strong> {{ commande.total }} Ar</p>
+</body>
+</html>

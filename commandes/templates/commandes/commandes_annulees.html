@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Commandes annulées{% endblock %}
+
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Désignation</th>
+      <th>Quantité</th>
+      <th>Date</th>
+      <th>Total</th>
+      <th>Statut</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for commande in commandes %}
+     {% for detail in commande.details.all %}
+       <tr>
+         <td>{{ detail.produit.designation }}</td>
+         <td>{{ detail.quantite }}</td>
+         <td>{{ commande.date_commande|date:"d F Y H:i" }}</td>
+         <td>{{ commande.total }} Ar</td>
+         <td>{{ commande.statut }}</td>
+       </tr>
+     {% endfor %}
+   {% empty %}
+     <tr><td colspan="5">Aucune commande annulée</td></tr>
+   {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'client_commandes' %}" class="btn btn-secondary">← Retour à mes commandes</a>
+{% endblock %}

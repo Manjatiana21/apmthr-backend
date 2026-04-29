@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Passer commande{% endblock %}
+{% block content %}
+<h2>Passer une commande</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <p>Produit choisi : <strong>{{ produit.designation }}</strong> - {{ produit.prix }} Ar</p>
+
+  <!-- ✅ Champ numéro qui s’affiche automatiquement -->
+  <div id="numero_admin" style="margin-top:10px; display:none;">
+      <label for="numero">Numéro pour envoyer le paiement :</label>
+      <input type="text" id="numero" class="form-control" readonly>
+  </div>
+
+  <button type="submit" class="btn btn-success">Commander</button>
+</form>
+
+<script>
+    // ✅ dictionnaire construit dynamiquement depuis la base
+    const operateurs = {
+        {% for mode in modes %}
+            "{{ mode.id }}": "{{ mode.numero_admin }}",
+        {% endfor %}
+    };
+
+    const selectMode = document.getElementById("id_mode_paiement"); // champ généré par Django
+    const numeroDiv = document.getElementById("numero_admin");
+    const numeroInput = document.getElementById("numero");
+
+    selectMode.addEventListener("change", function() {
+        const choix = this.value;  // ✅ récupère l'ID du mode
+        if (choix && operateurs[choix]) {
+            numeroDiv.style.display = "block";
+            numeroInput.value = operateurs[choix];
+        } else {
+            numeroDiv.style.display = "none";
+            numeroInput.value = "";
+        }
+    });
+</script>
+{% endblock %}

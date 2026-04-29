@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mon Application{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">Page d'accueil</a>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'liste_produits' %}">Nos Produits</a>
+      </li>
+
+      {% if user.is_authenticated and user.role == "CLIENT" %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'client_commandes' %}">Mes commandes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Nous Contacter</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'mes_notifications' %}">
+            🔔 Notifications 
+            {% if nb_notifications_non_lues > 0 %}
+              <span class="badge bg-danger">{{ nb_notifications_non_lues }}</span>
+            {% endif %}
+          </a>
+        </li>
+      {% endif %}
+
+      {% if user.is_authenticated and user.role == "ADMIN" %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'notifications_admin' %}">
+            🔔 Notifications 
+            {% if nb_notifications_non_lues > 0 %}
+              <span class="badge bg-danger">{{ nb_notifications_non_lues }}</span>
+            {% endif %}
+          </a>
+        </li>
+      {% endif %}
+
+    </ul>
+
+    {% if user.is_authenticated %}
+      <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link nav-link">Déconnexion</button>
+      </form>
+    {% else %}
+      <a class="nav-link" href="{% url 'authentification' %}">Connexion</a>
+    {% endif %}
+  </div>
+</nav>
+
+<main class="container mt-4">
+  {% block content %}
+  {% endblock %}
+</main>
+
+<script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+
+
+<footer class="text-center mt-4">
+  <p>&copy; 2026 - APMTHR</p>
+</footer>
+
+</body>
+</html>
+

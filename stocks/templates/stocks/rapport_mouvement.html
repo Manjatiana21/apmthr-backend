@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Rapport des mouvements de stock</h1>
+
+
+<div style="width:80%; margin:auto;">
+    <canvas id="stockChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('stockChart').getContext('2d');
+    const data = {{ data|safe }};  // dictionnaire passé depuis la vue
+    const labels = Object.keys(data);
+    const entrees = labels.map(mois => data[mois].ENTREE);
+    const sorties = labels.map(mois => data[mois].SORTIE);
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Entrées',
+                    data: entrees,
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)'
+                },
+                {
+                    label: 'Sorties',
+                    data: sorties,
+                    backgroundColor: 'rgba(255, 99, 132, 0.7)'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'Mouvements de stock par mois' }
+            }
+        }
+    });
+</script>
+
+<hr>
+
+
+<h2>Liste détaillée des mouvements</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Type</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mouvement in mouvements %}
+        <tr>
+            <td>{{ mouvement.produit.designation }}</td>
+            <td>{{ mouvement.quantite }}</td>
+            <td>{{ mouvement.type_mouvement }}</td>
+            <td>{{ mouvement.date_mouvement|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

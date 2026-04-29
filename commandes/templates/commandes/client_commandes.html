@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Mes commandes{% endblock %}
+
+{% block content %}
+<h2>Mes commandes</h2>
+<div class="mt-4">
+  <a href="{% url 'liste_produits' %}" class="btn btn-secondary">← Retour au catalogue</a>
+ 
+</div>
+<div class="mt-3"> <a href="{% url 'commandes_annulees' %}" class="btn btn-outline-danger"> Voir mes commandes annulées </a> </div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Produit(s) Commandé(s)</th>
+      <th>Date</th>
+      <th>Total</th>
+      <th>Statut</th>
+      <th>Détails</th>
+      <th>Paiement</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for commande in commandes %}
+      {% if commande.statut != "ANNULEE" %}
+        <tr>
+          <td> {% for detail in commande.details.all %} {{ detail.produit.designation }} (x{{ detail.quantite }})<br> {% endfor %} </td>
+          <td>{{ commande.date_commande }}</td>
+          <td>{{ commande.total }} Ar</td>
+          <td>{{ commande.statut }}</td>
+          <td>
+            <a href="{% url 'consulter_commande' commande.id %}">Voir</a>
+          </td>
+          <td> {% if commande.paiements %} {{ commande.paiements.mode_paiement }} - {{ commande.paiements.montant }} Ar {% else %} Aucun paiement {% endif %} </td>
+        </tr>
+      {% endif %}
+    {% empty %}
+    <tr>
+      <td colspan="6">Aucune commande trouvée.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

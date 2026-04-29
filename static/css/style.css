@@ -1,0 +1,130 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* prend tout l’espace disponible */
+}
+
+footer {
+  background: #f8f9fa;
+  padding: 10px;
+  text-align: center;
+}
+
+
+/* Barre de navigation */
+nav {
+    background: #2c3e50;
+    padding: 10px 20px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #1abc9c;
+}
+
+/* Contenu principal */
+main {
+    padding: 20px;
+}
+
+/* Tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: #fff;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background: #34495e;
+    color: #fff;
+}
+
+/* Boutons */
+button, a.button {
+    background: #1abc9c;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover, a.button:hover {
+    background: #16a085;
+}
+
+
+.FORME{
+    border: 2px solid grey;
+    height: 500px;
+    width: 500px;
+    border-radius: 15px;
+    position: absolute;
+    margin-left: 30%;
+    margin-top: 5%;
+    background-color: rgb(255, 221, 176);
+
+    #NOMU{
+        margin-left: 55px;
+        margin-top: 25%;
+    }
+
+    #PASSWORD{
+        margin-left: 55px;
+        margin-top: 8%;
+    }
+
+    #BTN{
+        margin-left: 40%;
+        margin-top: 8%;
+    }
+
+    input{
+        margin-left: 10px;
+    }
+
+    h2{
+        margin-top: 10%;
+        position: absolute;
+        margin-left: 25%;
+    }
+    
+    p{
+        margin-top: 15%;
+        margin-left: 25%;
+    }
+
+}

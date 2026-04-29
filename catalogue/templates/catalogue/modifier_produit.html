@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Modifier le produit : {{ produit.designation }}</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-success">Enregistrer</button>
+  <a href="{% url 'listes_des_produits' %}" class="btn btn-secondary">Annuler</a>
+</form>
+{% endblock %}

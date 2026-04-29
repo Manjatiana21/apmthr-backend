@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Ma commande{% endblock %}
+
+{% block content %}
+<h2>Détails de la commande {{ commande.id }}</h2>
+<p><strong>Client :</strong> {{ commande.client.username }}</p>
+<p><strong>Date :</strong> {{ commande.date_commande }}</p>
+<p><strong>Statut :</strong> {{ commande.statut }}</p>
+<p><strong>Total :</strong> {{ commande.total }} Ar</p>
+
+<h3>Produits commandés :</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Sous-total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for detail in details %}
+        <tr>
+            <td>{{ detail.produit.designation }}</td>
+            <td>{{ detail.quantite }}</td>
+            <td>{{ detail.prix_unitaire }} Ar</td>
+            <td>{{ detail.sous_total }} Ar</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Aucun produit dans cette commande.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+<div class="mt-4">
+  <!-- Bouton retour au catalogue -->
+  <a href="{% url 'liste_produits' %}" class="btn btn-secondary">← Retour au catalogue</a>
+
+  <!-- Bouton annuler commande (seulement si statut != VALIDE) -->
+  {% if commande.statut != "VALIDE" %}
+    <a href="{% url 'annuler_commande' commande.id %}" class="btn btn-danger">Annuler la commande</a>
+  {% endif %}
+</div>
+
+{% endblock %}

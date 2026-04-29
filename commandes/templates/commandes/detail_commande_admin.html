@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Détails de la commande #{{ commande.id }}</h2>
+    <p><strong>Client :</strong> {{ commande.client.username }}</p>
+    <p><strong>Date :</strong> {{ commande.date_commande }}</p>
+    <p><strong>Statut :</strong> {{ commande.statut }}</p>
+    <p><strong>Total :</strong> {{ commande.total }} Ar</p>
+
+    <h4>Produits commandés :</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Sous-total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in details %}
+            <tr>
+                <td>{{ detail.produit.designation }}</td>
+                <td>{{ detail.quantite }}</td>
+                <td>{{ detail.prix_unitaire }} Ar</td>
+                <td>{{ detail.sous_total }} Ar</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
